@@ -1,2 +1,4 @@
-var = str(float("1") * int(2.1))
-print(type(var))
+s = "my string"
+l = [1,2,3,4]
+print(type(str(__loader__)))
+print(list(s))
