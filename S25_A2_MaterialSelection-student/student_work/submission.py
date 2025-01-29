@@ -2,7 +2,7 @@
 # CSCI 128 - Section K
 # Assessment 2
 # References: no one
-# Time: 
+# Time: 1 hour
 
 metal = input("METAL> ")
 metal_list = input("PRICES> ")
