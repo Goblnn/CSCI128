@@ -1,6 +1,6 @@
 # CSCI 128
 # Assessment 2 Code Review
-# Group members names:
+# Group members names: Isaac Lane, Corbin Mitchell, Edward Villacres
 
 
 #get the metal we want
