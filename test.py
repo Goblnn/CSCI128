@@ -1,8 +1,7 @@
-life =  "the answer is"
+l = input()
+w = input()
 
-life = life[-1:-4:-1]
-
-everything = "si "
-
-
-print("Buy cheaper items!")
+if(l in w):
+    print("its in")
+else:
+    print(w[0:3]+l)
