@@ -1,7 +1,3 @@
-l = input()
-w = input()
-
-if(l in w):
-    print("its in")
-else:
-    print(w[0:3]+l)
+x = "0"
+y = "1"
+print(x or y)
