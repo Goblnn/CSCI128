@@ -1,4 +1,2 @@
-x = 0
-y = 1
-
-print(bool(x))
+print(not (False and False))
+print(not False or True)
