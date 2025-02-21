@@ -1,8 +1,8 @@
 # Isaac Lane
 # CSCI 128 - Section K
 # Assessment 6
-# References: no one
-# Time: 1 hour
+# References: Dylan Cheng-Lynn: How to use print debugging
+# Time: 2 hour
 
 # All inputs and list creations
 
@@ -17,7 +17,12 @@ for i in range(numStocks):
     stocks.append(input("TICKER> "))
     invested.append(float(input("INITIAL INVESTMENT> ")))
 
-initialInvested = invested
+
+initialInvested = []
+
+i = 0
+for i in range(len(invested)):
+    initialInvested.append(invested[i])
 
 i = 0
 for i in range(rounds):
@@ -78,7 +83,10 @@ else:
         stockPrice = invested[i]
         oldStockPrice = initialInvested[i]
 
-        percentChange = (stockPrice / oldStockPrice - 1) * 100
+        if(stockPrice == 0):
+            percentChange = -100.00
+        else:
+            percentChange = (stockPrice / oldStockPrice - 1) * 100
 
         stockPriceFinal += stockPrice
 
