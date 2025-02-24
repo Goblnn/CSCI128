@@ -1,14 +1,10 @@
-def func(x,y):
-    print(x+y)
-    return (x-y) ** 2
+l = [1, 2, 3]
+i = 999
 
-values = [1,5,9,7,2,4]
+def change(l, i):
+    l[0] = "changed"
+    i = 0
 
-for i in range(len(values)):
-    a = values[i-1]
-    b = func(a,i)
-    print("")
-    print(i)
-    print(a)
-    print(b)
-    print("")
+print(f"l: { l} , i: { i} ")
+change(l, i)
+print(f"l: { l} , i: { i} ")
