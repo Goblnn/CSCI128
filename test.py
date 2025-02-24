@@ -1,9 +1,14 @@
-x = 1
+def func(x,y):
+    print(x+y)
+    return (x-y) ** 2
 
-for i in range(5):
-    if(x > 5):
-        break
-    x += 1
-    i -=1
+values = [1,5,9,7,2,4]
+
+for i in range(len(values)):
+    a = values[i-1]
+    b = func(a,i)
+    print("")
     print(i)
-    print(x)
+    print(a)
+    print(b)
+    print("")
