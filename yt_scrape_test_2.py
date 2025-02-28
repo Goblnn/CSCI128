@@ -29,14 +29,13 @@ def check_unlisted_youtube(video_url):
         while(not country):
             if(gone):
                 print(gone.group(0))
-                return("This video is no longer available (deleted or private).")
+                #return("This video is no longer available (deleted or private).")
             response = requests.get(video_url, headers=headers)
             gone = re.search(r"This video isn't available anymore", response.text)
             country = re.search(r'"availableCountries":', response.text)
             print("bad, try again")
             with open("YT_unlisted_scraper/youtube_page.html","w",encoding = "utf-8") as file:
                 file.write(response.text)
-            time.sleep(1)
 
         with open("YT_unlisted_scraper/youtube_page.html","w",encoding = "utf-8") as file:
             file.write(response.text)
@@ -59,7 +58,7 @@ start_time = time.time()
 
 f = open("file.html","w")
 
-video_url = "https://www.youtube.com/watch?v=AAAAAAAAAAA"  # Replace with actual video URL
+video_url = "https://www.youtube.com/watch?v=RFWk_NDRSWU"  # Replace with actual video URL
 video_status = check_unlisted_youtube(video_url)
 print(f"Video status: {video_status}")
 print(time.time()-start_time)
