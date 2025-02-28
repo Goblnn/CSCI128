@@ -87,36 +87,41 @@ def create_url(ID):
     
     return URL
 
-def check_for_unlisted(URL): # CHECK THIS FOR MAKING SURE IT GETS ALL PACKETS
+def check_for_unlisted(URL):
+    # Get YouTube page
+    headers = {"User-Agent": random.choice(USER_AGENTS)}
+    site = requests.get(URL, headers=headers)
     
-        # Get YouTube page
-        headers = {"User-Agent": random.choice(USER_AGENTS)}
-        site = requests.get(URL, headers=headers)
-        
-        with open("YT_unlisted_scraper/youtube_page.html","w",encoding = "utf-8") as file:
-             file.write(site.text)
+    # with open("YT_unlisted_scraper/youtube_page.html","w",encoding = "utf-8") as file:
+    #      file.write(site.text)
 
-        # Check for proper page lookup
-        if site.status_code != 200:
-            return False
-
-        country_tag = re.search(r'"availableCountries":', site.text)
-
-        while(not country_tag):
-            site = requests.get(URL, headers=headers)
-            country_tag = re.search(r'"availableCountries":', site.text)
-            print("bad, try again")
-
-        # Search for 'isUnlisted' in the HTML
-        vid_type = re.search(r'"isUnlisted":(true|false)', site.text)
-
-        if vid_type:
-            if(vid_type.group(1) == "true"):
-                return True
-            else:
-                return False
-        
+    # Check for proper page lookup
+    if site.status_code != 200:
         return False
+
+    country_tag = re.search(r'"availableCountries":', site.text)
+    unavailable = re.search(r"This video isn't available anymore", site.text)
+
+    while(not country_tag):
+        if(unavailable):
+            return False
+        
+        site = requests.get(URL, headers=headers)
+        country_tag = re.search(r'"availableCountries":', site.text)
+        unavailable = re.search(r"This video isn't available anymore", site.text)
+
+        print("Bad site get, trying again.")
+
+    # Search for 'isUnlisted' in the HTML
+    vid_type = re.search(r'"isUnlisted":(true|false)', site.text)
+
+    if vid_type:
+        if(vid_type.group(1) == "true"):
+            return True
+        else:
+            return False
+    
+    return False
 
 def increment_ID(ID):
     ID_pos = 0
@@ -134,3 +139,12 @@ def increment_ID(ID):
             break
     
     return ID
+
+def sum_list(lst):
+    i = 0
+    sum = 0
+    length = len(lst)
+    for i in range(len(lst)):
+        sum += lst[i]
+
+    return sum / length

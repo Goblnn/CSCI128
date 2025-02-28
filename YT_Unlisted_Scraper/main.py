@@ -19,9 +19,11 @@ URL_base = "https://www.youtube.com/watch?v="
 cur_ID = [0,0,0,0,0,0,0,0,0,0,0]
 cur_URL = ""
 
+average_loop_time = [0,0,0,0,0,0,0,0,0,0]
+
 unlisted_videos = open("YT_Unlisted_Scraper/UnlistedVideos.txt","a")
 
-data_output_minimal = False
+data_output_minimal = True
 
 # Initializing the URL
 init_from_file = input("Would you like to start the scraper using an URL in a file? ('Y' or 'N')")
@@ -32,7 +34,7 @@ while(not (init_from_file == "Y") and not (init_from_file == "N")):
     init_from_file = input("Would you like to start the scraper using an URL in a file? ('Y' or 'N')")
 
 if(init_from_file == "Y"):
-    print("Please put the URL in the first line of 'LastURL.txt'")
+    print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
     ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP')")
     print("")
 
@@ -43,8 +45,9 @@ if(init_from_file == "Y"):
     if(ready_to_continue == "STOP"):
         quit()
     else:
-        init_file = open("LastURL.txt","r")
-        init_URL = init_file.readLine().strip("\n")
+        init_file = open("YT_unlisted_scraper/LastURL.txt","r")
+        init_URL = init_file.readline()
+        init_URL = init_URL.strip()
         init_file.close()
 
         while(True):
@@ -55,7 +58,7 @@ if(init_from_file == "Y"):
 
                 if(valid_ID == False): # Invalid input
                     print(f"'{init_URL}' is not a valid input. Please try again.")
-                    print("Please put the URL in the first line of 'LastURL.txt'")
+                    print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
                     ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP')")
                     print("")
 
@@ -66,15 +69,15 @@ if(init_from_file == "Y"):
                     if(ready_to_continue == "STOP"):
                         quit()
                     else:
-                        init_file = open("LastURL.txt","r")
-                        init_URL = init_file.readLine().strip("\n")
+                        init_file = open("YT_unlisted_scraper/LastURL.txt","r")
+                        init_URL = init_file.readline.strip("\n")
                         init_file.close()
                 else: # Valid input
                     cur_ID = func.initialize_bit_ID(init_ID)
                     break
             else:
                 print(f"'{init_URL}' is not a valid input. Please try again.")
-                print("Please put the URL in the first line of 'LastURL.txt'")
+                print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
                 ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP')")
                 print("")
 
@@ -85,8 +88,8 @@ if(init_from_file == "Y"):
                 if(ready_to_continue == "STOP"):
                     quit()
                 else:
-                    init_file = open("LastURL.txt","r")
-                    init_URL = init_file.readLine().strip("\n")
+                    init_file = open("YT_unlisted_scraper/LastURL.txt","r")
+                    init_URL = init_file.readline.strip("\n")
                     init_file.close()
 else:
     init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE')")
@@ -151,6 +154,10 @@ while(True):
             print("Toggling outputs")
             data_output_minimal = not data_output_minimal
 
+    if(URLs_tested != 0):
+        cur_ID = func.increment_ID(cur_ID)
+        cur_URL = func.create_url(cur_ID)
+
     is_unlisted = func.check_for_unlisted(cur_URL)
 
     if(data_output_minimal):
@@ -166,7 +173,8 @@ while(True):
         
         if(URLs_tested % 10 == 0):
             print(f"URLs tested: {URLs_tested}")
-            print(f"Press 'q' to stop the program. Press 'o' to minimize outputs")
+            print(f"Average loop time: {func.sum_list(average_loop_time)}")
+            print(f"Press 'q' to stop the program. Press 'o' to toggle outputs")
             print("")
     else:
         if(is_unlisted):
@@ -180,15 +188,15 @@ while(True):
         print(f"Current URL: {cur_URL}")
         print(f"Current ID: {cur_ID}")
         print(f"Loop Time: {time.time() - time_start}")
-        print(f"Press 'q' to stop the program. Press 'o' to minimize outputs")
+        print(f"Press 'q' to stop the program. Press 'o' to toggle outputs")
         print("")
 
-    last_URL = open("LastURL.txt","w")
-    last_URL.write(cur_URL)
-    last_URL.close()
+    with open("YT_unlisted_scraper/LastURL.txt", "w") as file:
+        file.write(cur_URL)
 
-    cur_ID = func.increment_ID(cur_ID)
-    cur_URL = func.create_url(cur_ID)
+    del average_loop_time[0]
+    average_loop_time.append(time.time() - time_start)
+
     URLs_tested += 1
 
 # Write code for printing out unlisted videos based on text file
@@ -196,3 +204,5 @@ print("")
 print(f"Total Time Elapsed: {time.time() - loop_start_time}")
 print(f"Total URLs Tested: {URLs_tested}")
 print(f"Total Unlisted Videos: {unlisted_videos_count}")
+print(f"Last URL tested: {cur_URL}")
+print(f"Last ID tested: {cur_ID}")
