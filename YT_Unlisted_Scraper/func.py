@@ -80,7 +80,7 @@ def create_url(ID):
     
     return URL
 
-def check_for_unlisted(URL):
+def check_for_unlisted(URL): # CHECK THIS FOR MAKING SURE IT GETS ALL PACKETS
     
         # Get YouTube page
         headers = {"User-Agent": "Mozilla/5.0"}

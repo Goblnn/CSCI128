@@ -78,7 +78,9 @@ while(True):
     is_unlisted = func.check_for_unlisted(cur_URL)
 
     if(is_unlisted):
+        unlisted_videos = open("YT_Unlisted_Scraper/unlistedVideos.txt","a")
         unlisted_videos.write(cur_URL + "\n")
+        unlisted_videos.close()
         
         print(f"Unlisted Video Found!")
     
