@@ -88,6 +88,13 @@ def create_url(ID):
     return URL
 
 def check_for_unlisted(URL):
+    '''
+    Checks an inputted YouTube URL for unlisted tags.
+
+    :param URL: YouTube URL
+    :return: True (unlisted) or False (public/private/other)
+    '''
+
     # Get YouTube page
     headers = {"User-Agent": random.choice(USER_AGENTS)}
     site = requests.get(URL, headers=headers)
@@ -124,6 +131,13 @@ def check_for_unlisted(URL):
     return False
 
 def increment_ID(ID):
+    '''
+    Increments an inputted 64 bit ID by one. 
+
+    :param ID: 64 bit ID to increment
+    :return: 64 bit ID
+    '''
+
     ID_pos = 0
 
     while(True):
@@ -140,7 +154,15 @@ def increment_ID(ID):
     
     return ID
 
+# REFRACTOR THIS
 def sum_list(lst):
+    '''
+    Finds the average of an inputted list.
+
+    :param lst: Inputted list to average
+    :return: Average of the inputted list
+    '''
+
     i = 0
     sum = 0
     length = len(lst)
@@ -150,6 +172,13 @@ def sum_list(lst):
     return sum / length
 
 def make_URL_list(ID):
+    '''
+    Creates a list of four URLs based on an initial ID.
+
+    :param ID:
+    :return: URL_list: List of URLs, ID: Reference ID for next URL
+    '''
+
     URL_list = []
     for i in range(4):
         URL_list.append(create_url(ID))
@@ -161,4 +190,12 @@ def make_URL_list(ID):
     return URL_list, ID
 
 def check_for_unlisted_list(URL_list):
+    '''
+    Checks each URL in an inputted list for its accessibility state (public/unlisted/private/DNE) and returns a list of the results.
+
+    :param URL_list: 
+    :return: List of URLs and accessibility state ([[URL, state],...])
+    '''
+
+    
     return 0
