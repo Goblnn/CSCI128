@@ -1,3 +1,6 @@
+import requests
+import re
+
 ID_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
 last_ID_chars = "AEIMQUYcgkosw048"
 
@@ -76,3 +79,41 @@ def create_url(ID):
     URL += char_id
     
     return URL
+
+def check_for_unlisted(URL):
+    
+        # Get YouTube page
+        headers = {"User-Agent": "Mozilla/5.0"}
+        site = requests.get(URL, headers=headers)
+        
+        # Check for proper page lookup
+        if site.status_code != 200:
+            return False
+
+        # Search for 'isUnlisted' in the HTML
+        match = re.search(r'"isUnlisted":(true|false)', site.text)
+
+        if match:
+            if(match.group(1) == "true"):
+                return True
+            else:
+                return False
+        
+        return False
+
+def increment_ID(ID):
+    ID_pos = 0
+
+    while(True):
+        ID[ID_pos] += 1
+
+        if(ID[ID_pos] > 63 and ID_pos < 10):
+            ID[ID_pos] = 0
+            ID_pos += 1
+        elif(ID[ID_pos] > 15 and ID_pos == 10):
+            ID[0] = "FINISHED"
+            break
+        else:
+            break
+    
+    return ID

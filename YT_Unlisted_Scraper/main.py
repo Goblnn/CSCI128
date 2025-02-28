@@ -2,7 +2,7 @@ import math
 import msvcrt
 import func
 import time
-from urllib.request import urlopen
+import requests
 
 # public link: https://www.youtube.com/watch?v=Ipw0NZThxKo
 # unlisted link: https://www.youtube.com/watch?v=RFWk_NDRSWU
@@ -15,12 +15,12 @@ https://wiki.archiveteam.org/index.php/YouTube/Technical_details#:~:text=8%20Ref
 
 URL_base = "https://www.youtube.com/watch?v="
 
-unlisted_badge = '<p class="style-scope ytd-badge-supported-renderer">Unlisted</p>'
-
 cur_ID = [0,0,0,0,0,0,0,0,0,0,0]
 cur_URL = ""
 
 init_ID = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
+
+unlisted_videos = open("YT_Unlisted_Scraper/unlistedVideos.txt","a")
 
 while(True):
     if(init_ID == "NONE"): # No cur_ID change
@@ -58,21 +58,37 @@ print(f"Current URL: {cur_URL}")
 print(f"Current ID: {cur_ID}")
 print("")
 
-print("Scraping is starting")
+print("Scraping is starting. Press 'q' to stop program.")
 print("")
-time_start = time.time()
-page = urlopen(cur_URL)
-html_bytes = page.read()
 
-html_string = html_bytes.decode("utf-8")
+# Scraping begins
+while(True):
+    time_start = time.time()
 
+    # Stop Conditions
+    if(cur_ID[0] == "FINISHED"): # Check for no more IDs
+        print("Ran out of IDs (all values maxed out), stopping program.")
+        break
 
-f = open("vidhtml.txt","w")
-f.write(html_string)
-# print(html_string)
+    if(msvcrt.kbhit()): # Check for keyboard inputs
+        if(msvcrt.getwch() == "q"):
+            print("Keyboard input detected, stopping program.")
+            break
 
-if(unlisted_badge in html_string):
-    print("LOCKED IN")
-else:
-    print("LOCKED OUT")
-print(time.time() - time_start)
+    is_unlisted = func.check_for_unlisted(cur_URL)
+
+    if(is_unlisted):
+        unlisted_videos.write(cur_URL + "\n")
+        
+        print(f"Unlisted Video Found!")
+    
+    print(f"Current URL: {cur_URL}")
+    print(f"Current ID: {cur_ID}")
+    print(f"Loop Time: {time.time() - time_start}")
+    print(f"Press 'q' to stop the program.")
+    print("")
+
+    cur_ID = func.increment_ID(cur_ID)
+    cur_URL = func.create_url(cur_ID)
+
+# Write code for printing out unlisted videos based on text file
