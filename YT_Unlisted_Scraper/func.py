@@ -1,10 +1,17 @@
 import requests
 import re
+import random
 
 ID_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
 last_ID_chars = "AEIMQUYcgkosw048"
 
 URL_base = "https://www.youtube.com/watch?v="
+
+USER_AGENTS =  [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+]
 
 def test_validity(init_ID):
     """
@@ -83,18 +90,28 @@ def create_url(ID):
 def check_for_unlisted(URL): # CHECK THIS FOR MAKING SURE IT GETS ALL PACKETS
     
         # Get YouTube page
-        headers = {"User-Agent": "Mozilla/5.0"}
+        headers = {"User-Agent": random.choice(USER_AGENTS)}
         site = requests.get(URL, headers=headers)
         
+        with open("YT_unlisted_scraper/youtube_page.html","w",encoding = "utf-8") as file:
+             file.write(site.text)
+
         # Check for proper page lookup
         if site.status_code != 200:
             return False
 
-        # Search for 'isUnlisted' in the HTML
-        match = re.search(r'"isUnlisted":(true|false)', site.text)
+        country_tag = re.search(r'"availableCountries":', site.text)
 
-        if match:
-            if(match.group(1) == "true"):
+        while(not country_tag):
+            site = requests.get(URL, headers=headers)
+            country_tag = re.search(r'"availableCountries":', site.text)
+            print("bad, try again")
+
+        # Search for 'isUnlisted' in the HTML
+        vid_type = re.search(r'"isUnlisted":(true|false)', site.text)
+
+        if vid_type:
+            if(vid_type.group(1) == "true"):
                 return True
             else:
                 return False
