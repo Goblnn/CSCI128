@@ -2,60 +2,49 @@ import math
 import msvcrt
 import func
 
-
-
-ID_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
-last_ID_chars = "AEIMQUYcgkosw048"
-
 URL_base = "https://www.youtube.com/watch?v="
 
 cur_ID = [0,0,0,0,0,0,0,0,0,0,0]
+cur_URL = ""
 
-init_id = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
+init_ID = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
 
 while(True):
-    if(init_id == "NONE"): # No cur_ID change
+    if(init_ID == "NONE"): # No cur_ID change
         break
-
-    elif(URL_base in init_id and len(init_id) == 33): # Valid YT link input
-        init_id = init_id[32:]
+    elif(URL_base in init_ID and len(init_ID) == 43): # Valid YT link input
+        init_ID = init_ID[32:]
 
         # Testing ID for validity
-        valid_chars = True
+        valid_ID = func.test_validity(init_ID)
 
-        i = 0
-        for i in range(len(init_id) - 1):
-            if(init_id[i] not in ID_chars):
-                valid_chars = False
-
-        if(init_id[10] not in ID_chars):
-            valid_chars = False
-
-        if(valid_chars == False): # Invalid input
-            print(f"{init_id} is not a valid input. Please try again.")
-            init_id = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
+        if(valid_ID == False): # Invalid input
+            print(f"{init_ID} is not a valid input. Please try again.")
+            init_ID = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
         else: # Valid input
-            cur_ID = func.initialize_ID(init_id)
+            cur_ID = func.initialize_bit_ID(init_ID)
             break
-    elif(len(init_id) == 11): # Valid ID input
-        valid_chars = True
+    elif(len(init_ID) == 11): # Valid ID input
+        # Testing ID for validity
+        valid_ID = func.test_validity(init_ID)
 
-        i = 0
-        for i in range(len(init_id) - 1):
-            if(init_id[i] not in ID_chars):
-                valid_chars = False
-
-        if(init_id[10] not in ID_chars):
-            valid_chars = False
-
-        if(valid_chars == False): # Invalid input
-            print(f"{init_id} is not a valid input. Please try again.")
-            init_id = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
+        if(valid_ID == False): # Invalid input
+            print(f"{init_ID} is not a valid input. Please try again.")
+            init_ID = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
         else: # Valid input
-            cur_ID = func.initialize_ID(init_id)
+            cur_ID = func.initialize_bit_ID(init_ID)
             break
     else: # Invalid input
+        print(f"{init_ID} is not a valid input. Please try again.")
+        init_ID = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
 
-        print(f"{init_id} is not a valid input. Please try again.")
-        init_id = input("Start at initial ID? (input YouTube link, YouTube ID, or 'NONE')")
+cur_URL = func.create_url(cur_ID)
+
+print("")
+print(f"Current URL: {cur_URL}")
+print(f"Current ID: {cur_ID}")
+print("")
+
+print("Scraping is starting")
+print("")
 

@@ -1,7 +1,39 @@
 ID_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"
 last_ID_chars = "AEIMQUYcgkosw048"
 
-def initialize_ID(ID):
+URL_base = "https://www.youtube.com/watch?v="
+
+def test_validity(init_ID):
+    """
+    Checks an inputted ID to make sure it follows the valid YouTube ID setup
+
+    :param init_ID: ID in character form to validate
+    :return: True if valid, False if invalid
+    """
+
+    valid_chars = True
+
+    i = 0
+    for i in range(len(init_ID) - 1):
+        if(init_ID[i] not in ID_chars):
+            valid_chars = False
+
+    if(init_ID[10] not in last_ID_chars):
+        valid_chars = False
+
+    if(valid_chars == False): # Invalid input
+        return False
+    else: # Valid input
+        return True
+
+def initialize_bit_ID(ID):
+    """
+    Changes a YouTube ID inputted in character form into bit form
+
+    :param ID: Character ID to initialize into 64 bit form
+    :return: List of the characters in the ID in 64 bit form
+    """
+
     new_ID = [0,0,0,0,0,0,0,0,0,0,0]
     i = 0
     for i in range(len(ID) - 1):
@@ -9,4 +41,38 @@ def initialize_ID(ID):
     
     new_ID[10] = last_ID_chars.index(ID[10])
     
-    return ID
+    return new_ID
+
+def initialize_char_ID(ID):
+    """
+    Changes a YouTube ID inputted in bit form into character form
+
+    :param ID: 64 bit ID to initialize into character form
+    :return: ID string using valid YouTube characters
+    """
+        
+    new_ID = ""
+
+    i = 0
+    for i in range(len(ID) - 1):
+        new_ID += ID_chars[ID[i]]
+    
+    new_ID += last_ID_chars[ID[10]]
+    
+    return new_ID
+
+def create_url(ID):
+    """
+    Generates a YouTube video URL for use in scraping
+
+    :param ID: 64 bit ID to use in URL creation
+    :return: YouTube video URL
+    """
+    URL = ""
+    URL += URL_base
+
+    char_id = initialize_char_ID(ID)
+
+    URL += char_id
+    
+    return URL
