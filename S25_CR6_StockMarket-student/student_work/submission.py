@@ -8,19 +8,27 @@ def run():
     in_invest = []
 
     # company info
-    for company in n_companies:
+    # for company in range(n_companies):
+    #     ticker_list.append(input("TICKER"))
+    #     invest = float(input("INITIAL INVESTMENT"))
+    #     in_invest.append(invest)
+    #     invest_list.append(invest)
+    
+    loop = 0
+    while(loop < n_companies):
         ticker_list.append(input("TICKER"))
         invest = float(input("INITIAL INVESTMENT"))
         in_invest.append(invest)
         invest_list.append(invest)
+        loop += 1
 
 
     # do the simulation
     for period in range(n_periods):
-        simulation = input(f"SIM PERIOD {period+1}> ").split()
+        simulation = input(f"SIM PERIOD {period+1}> ").split(";")
         for i in range(len(ticker_list)):
             comp_loc = simulation.index(ticker_list[i])
-            change = invest_list[period] * float(simulation[comp_loc + 1])
+            change = invest_list[i] * float(simulation[comp_loc + 1])
             if (invest_list[i] + change) <= 0:
                 change = -invest_list[i]
             
