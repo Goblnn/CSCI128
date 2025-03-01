@@ -168,7 +168,7 @@ def scrape_videos():
         if(URLs_tested != 0):
             URL_list, reference_ID = func.make_URL_list(reference_ID)
 
-        with multiprocessing.Pool(processes=12) as pool:
+        with multiprocessing.Pool(processes=5) as pool:
             results = pool.map(func.check_for_unlisted_multi, URL_list)
     
         i = 0 
@@ -197,11 +197,12 @@ def scrape_videos():
             URLs_tested += 1
 
         if(data_output_minimal):
-            if(URLs_tested % 120 == 0):
-                print(f"URLs tested: {URLs_tested}")
-                print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds")
-                print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
-                print("")
+            # if(URLs_tested % 120 == 0):
+            #     print(f"URLs tested: {URLs_tested}")
+            #     print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds")
+            #     print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
+            #     print("")
+            unlisted_videos_count = unlisted_videos_count
         else:
             print(f"Current URL List: {URL_list}")
             print(f"Current Reference ID: {reference_ID}")
