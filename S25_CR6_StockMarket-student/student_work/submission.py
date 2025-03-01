@@ -1,5 +1,7 @@
 # Code Review 6 Stock Market
 
+# Team Members: Isaac Lane, Corbin Mitchell, Edward Villacres
+
 def run():
     n_periods = int(input("NUM ROUNDS> "))
     n_companies = int(input("NUM STOCKS> "))
