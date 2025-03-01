@@ -215,13 +215,21 @@ def scrape_videos():
         del average_loop_time[0]
         average_loop_time.append(time.time() - time_start)
 
-    # Write code for printing out unlisted videos based on text file
+    total_tested_file = open("UnlistedScraperMultiProcessor/TotalURLsTested.txt","r")
+    total_tested = int(total_tested_file.readline().strip("\n"))
+    total_tested_file.close()
+    total_tested += URLs_tested
+
+    with open("UnlistedScraperMultiProcessor/TotalURLsTested.txt","w") as total_tested_file:
+        total_tested_file.write(str(total_tested))
+
     print("")
     print(f"Total Time Elapsed: {(time.time() - loop_start_time):.4f} seconds")
-    print(f"Total URLs Tested: {URLs_tested}")
-    print(f"Total Unlisted Videos: {unlisted_videos_count}")
-    print(f"Last URL tested: {URL_list[-1]}")
-    print(f"Last ID tested: {func.initialize_bit_ID(URL_list[-1][32:])}")
+    print(f"Total URLs Tested This Execution: {URLs_tested}")
+    print(f"Total URLs Tested: {total_tested}")
+    print(f"Total Unlisted Videos Found: {unlisted_videos_count}")
+    print(f"Last URL Tested: {URL_list[-1]}")
+    print(f"Last ID Tested: {func.initialize_bit_ID(URL_list[-1][32:])}")
 
 if __name__ == "__main__":
     scrape_videos()
