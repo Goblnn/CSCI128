@@ -180,7 +180,7 @@ def make_URL_list(ID):
     '''
 
     URL_list = []
-    for i in range(4):
+    for i in range(10):
         URL_list.append(create_url(ID))
         ID = increment_ID(ID)
 

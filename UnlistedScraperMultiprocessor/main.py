@@ -1,5 +1,6 @@
 import math
 import msvcrt
+import multiprocessing
 import func
 import time
 import requests
@@ -28,7 +29,7 @@ def scrape_videos():
 
     average_loop_time = [0,0,0,0,0,0,0,0,0,0]
 
-    unlisted_videos = open("YT_Unlisted_Scraper/UnlistedVideos.txt","a")
+    unlisted_videos = open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a")
 
     data_output_minimal = True
 
@@ -41,7 +42,7 @@ def scrape_videos():
         init_from_file = input("Would you like to start the scraper using an URL in a file? ('Y' or 'N') ")
 
     if(init_from_file == "Y"):
-        print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
+        print("Please put the URL in the first line of 'UnlistedScraperMultiProcessor/LastURL.txt'")
         ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
         print("")
 
@@ -52,7 +53,7 @@ def scrape_videos():
         if(ready_to_continue == "STOP"):
             quit()
         else:
-            init_file = open("YT_unlisted_scraper/LastURL.txt","r")
+            init_file = open("UnlistedScraperMultiProcessor/LastURL.txt","r")
             init_URL = init_file.readline()
             init_URL = init_URL.strip()
             init_file.close()
@@ -65,7 +66,7 @@ def scrape_videos():
 
                     if(valid_ID == False): # Invalid input
                         print(f"'{init_URL}' is not a valid input. Please try again.")
-                        print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
+                        print("Please put the URL in the first line of 'UnlistedScraperMultiProcessor/LastURL.txt'")
                         ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
                         print("")
 
@@ -76,7 +77,7 @@ def scrape_videos():
                         if(ready_to_continue == "STOP"):
                             quit()
                         else:
-                            init_file = open("YT_unlisted_scraper/LastURL.txt","r")
+                            init_file = open("UnlistedScraperMultiProcessor/LastURL.txt","r")
                             init_URL = init_file.readline.strip("\n")
                             init_file.close()
                     else: # Valid input
@@ -84,7 +85,7 @@ def scrape_videos():
                         break
                 else:
                     print(f"'{init_URL}' is not a valid input. Please try again.")
-                    print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
+                    print("Please put the URL in the first line of 'UnlistedScraperMultiProcessor/LastURL.txt'")
                     ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
                     print("")
 
@@ -95,7 +96,7 @@ def scrape_videos():
                     if(ready_to_continue == "STOP"):
                         quit()
                     else:
-                        init_file = open("YT_unlisted_scraper/LastURL.txt","r")
+                        init_file = open("UnlistedScraperMultiProcessor/LastURL.txt","r")
                         init_URL = init_file.readline.strip("\n")
                         init_file.close()
     else:
@@ -156,7 +157,6 @@ def scrape_videos():
             print("Ran out of IDs (all values maxed out), stopping program.")
             break
 
-        # CURRENTLY HERE FOR UPDATING CODE
         if(msvcrt.kbhit()): # Check for keyboard inputs
             if(msvcrt.getwch() == "q"):
                 print("Keyboard input detected, stopping program.")
@@ -166,57 +166,62 @@ def scrape_videos():
                 data_output_minimal = not data_output_minimal
 
         if(URLs_tested != 0):
-            reference_ID = func.increment_ID(reference_ID)
-            reference_URL = func.create_url(reference_ID)
+            URL_list, reference_ID = func.make_URL_list(reference_ID)
 
-        is_unlisted = func.check_for_unlisted(reference_URL)
+        with multiprocessing.Pool(processes=10) as pool:
+            results = pool.map(func.check_for_unlisted_multi, URL_list)
     
+        i = 0 
+        for URL, is_unlisted in results:
+            if(data_output_minimal):
+                if(is_unlisted):
+                    unlisted_videos = open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a")
+                    unlisted_videos.write(URL + "\n")
+                    unlisted_videos.close()
+                    unlisted_videos_count += 1
+                    
+                    print(f"Unlisted Video Found!")
+                    print(f"Current URL: {URL}")
+                    print(f"Current ID: {func.initialize_bit_ID(URL[32:])}")
+            else:
+                if(is_unlisted):
+                    unlisted_videos = open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a")
+                    unlisted_videos.write(URL + "\n")
+                    unlisted_videos.close()
+                    unlisted_videos_count += 1
+                    
+                    print(f"Unlisted Video Found!")
+                    print(f"Current URL: {URL}")
+                    print(f"Current ID: {func.initialize_bit_ID(URL[32:])}")
+
+            URLs_tested += 1
+
         if(data_output_minimal):
-            if(is_unlisted):
-                unlisted_videos = open("YT_Unlisted_Scraper/UnlistedVideos.txt","a")
-                unlisted_videos.write(reference_URL + "\n")
-                unlisted_videos.close()
-                unlisted_videos_count += 1
-                
-                print(f"Unlisted Video Found!")
-                print(f"Current URL: {reference_URL}")
-                print(f"Current ID: {reference_ID}")
-            
-            if(URLs_tested % 10 == 0):
+            if(URLs_tested % 100 == 0):
                 print(f"URLs tested: {URLs_tested}")
-                print(f"Average loop time: {func.sum_list(average_loop_time):.4f} seconds")
+                print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds")
                 print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
                 print("")
         else:
-            if(is_unlisted):
-                unlisted_videos = open("YT_Unlisted_Scraper/UnlistedVideos.txt","a")
-                unlisted_videos.write(reference_URL + "\n")
-                unlisted_videos.close()
-                unlisted_videos_count += 1
-                
-                print(f"Unlisted Video Found!")
-            
-            print(f"Current URL: {reference_URL}")
-            print(f"Current ID: {reference_ID}")
+            print(f"Current URL List: {URL_list}")
+            print(f"Current Reference ID: {reference_ID}")
             print(f"Loop Time: {(time.time() - time_start):.4f} seconds")
             print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
             print("")
 
-        with open("YT_unlisted_scraper/LastURL.txt", "w") as file:
-            file.write(reference_URL)
+        with open("UnlistedScraperMultiProcessor/LastURL.txt", "w") as file:
+            file.write(URL_list[-1])
 
         del average_loop_time[0]
         average_loop_time.append(time.time() - time_start)
 
-        URLs_tested += 1
-
     # Write code for printing out unlisted videos based on text file
     print("")
-    print(f"Total Time Elapsed: {time.time() - loop_start_time}")
+    print(f"Total Time Elapsed: {(time.time() - loop_start_time):.4f} seconds")
     print(f"Total URLs Tested: {URLs_tested}")
     print(f"Total Unlisted Videos: {unlisted_videos_count}")
-    print(f"Last URL tested: {reference_URL}")
-    print(f"Last ID tested: {reference_ID}")
+    print(f"Last URL tested: {URL_list[-1]}")
+    print(f"Last ID tested: {func.initialize_bit_ID(URL_list[-1][32:])}")
 
 if __name__ == "__main__":
     scrape_videos()

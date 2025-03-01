@@ -1,8 +1,6 @@
-import math
 import msvcrt
 import func
 import time
-import requests
 
 # public link: https://www.youtube.com/watch?v=Ipw0NZThxKo
 # unlisted link: https://www.youtube.com/watch?v=RFWk_NDRSWU
@@ -173,7 +171,7 @@ while(True):
         
         if(URLs_tested % 10 == 0):
             print(f"URLs tested: {URLs_tested}")
-            print(f"Average loop time: {func.sum_list(average_loop_time):.4f} seconds")
+            print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds")
             print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
             print("")
     else:
