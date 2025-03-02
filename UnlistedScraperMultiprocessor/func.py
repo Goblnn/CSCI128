@@ -171,7 +171,7 @@ def average_list(lst):
 
     return sum / length
 
-def make_URL_list(ID):
+def make_URL_list(ID, length):
     '''
     Creates a list of four URLs based on an initial ID.
 
@@ -180,7 +180,7 @@ def make_URL_list(ID):
     '''
 
     URL_list = []
-    for i in range(5):
+    for i in range(length):
         URL_list.append(create_url(ID))
         ID = increment_ID(ID)
 

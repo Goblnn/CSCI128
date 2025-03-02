@@ -33,6 +33,8 @@ def scrape_videos():
 
     data_output_minimal = True
 
+    num_processes = int(input("How many processes would you like to run at once? "))
+
     # Initializing the URL
     init_from_file = input("Would you like to start the scraper using an URL in a file? ('Y' or 'N') ")
     print("")
@@ -131,14 +133,12 @@ def scrape_videos():
                 print(f"'{init_ID}' is not a valid input. Please try again.")
                 init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
 
-    reference_URL = func.create_url(reference_ID)
-
     # THIS IS THE CODE FOR MAKING THE URL LIST, OTHER STUFF MAY NOT BE NECESSARY FOR URL
-    URL_list, reference_ID = func.make_URL_list(reference_ID)
+    URL_list, reference_ID = func.make_URL_list(reference_ID, num_processes)
 
     print("")
-    print(f"Current URL: {reference_URL}")
-    print(f"Current ID: {reference_ID}")
+    print(f"Current URL: {URL_list[0]}")
+    print(f"Current ID: {func.initialize_bit_ID(URL_list[0][32:])}")
     print("")
 
     print("Scraping is starting. Press 'q' to stop program. Press 'o' to minimize outputs.")
@@ -166,42 +166,31 @@ def scrape_videos():
                 data_output_minimal = not data_output_minimal
 
         if(URLs_tested != 0):
-            URL_list, reference_ID = func.make_URL_list(reference_ID)
+            URL_list, reference_ID = func.make_URL_list(reference_ID, num_processes)
 
-        with multiprocessing.Pool(processes=5) as pool:
+        with multiprocessing.Pool(processes=12) as pool:
             results = pool.map(func.check_for_unlisted_multi, URL_list)
     
         i = 0 
         for URL, is_unlisted in results:
-            if(data_output_minimal):
-                if(is_unlisted):
-                    unlisted_videos = open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a")
-                    unlisted_videos.write(URL + "\n")
-                    unlisted_videos.close()
-                    unlisted_videos_count += 1
-                    
-                    print(f"Unlisted Video Found!")
-                    print(f"Current URL: {URL}")
-                    print(f"Current ID: {func.initialize_bit_ID(URL[32:])}")
-            else:
-                if(is_unlisted):
-                    unlisted_videos = open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a")
-                    unlisted_videos.write(URL + "\n")
-                    unlisted_videos.close()
-                    unlisted_videos_count += 1
-                    
-                    print(f"Unlisted Video Found!")
-                    print(f"Current URL: {URL}")
-                    print(f"Current ID: {func.initialize_bit_ID(URL[32:])}")
+            if(is_unlisted):
+                unlisted_videos = open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a")
+                unlisted_videos.write(URL + "\n")
+                unlisted_videos.close()
+                unlisted_videos_count += 1
+                
+                print(f"Unlisted Video Found!")
+                print(f"Current URL: {URL}")
+                print(f"Current ID: {func.initialize_bit_ID(URL[32:])}")
 
             URLs_tested += 1
 
         if(data_output_minimal):
-            # if(URLs_tested % 120 == 0):
-            #     print(f"URLs tested: {URLs_tested}")
-            #     print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds")
-            #     print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
-            #     print("")
+            if(URLs_tested % (num_processes * 10) == 0):
+                print(f"URLs tested: {URLs_tested}")
+                print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds")
+                print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
+                print("")
             unlisted_videos_count = unlisted_videos_count
         else:
             print(f"Current URL List: {URL_list}")
