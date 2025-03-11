@@ -41,12 +41,15 @@ def words_to_vector(index_array, word_array):
     for i in range(len(index_array)):
         frequency.append(0) 
 
-    for line in word_array:
-        for i in range(len(line)):
-            if line[i] in index_array:
-                word_index = index_array.index(line[i])
-                frequency[word_index] += 1
+    print(index_array)
 
+    for word in word_array:
+        print(word)
+        if word in index_array:
+            word_index = index_array.index(word)
+            frequency[word_index] += 1
+
+    print("")
     return frequency 
 
 def join_frequency_vectors(fv1, fv2):
@@ -128,19 +131,13 @@ if __name__ == "__main__":
 
     for i in range(len(doc2)):
         doc2[i] = clean_document_line(doc2[i])
-    
-    print(doc1)
-    print(doc2)
 
     empty = True
     i = 0
     while i < len(doc1):
         for word in doc1[i]:
-            # print(word)
             if word != "":
                 empty = False
-                # print("uh oh")
-            # print("")
         
         if empty == True:
             doc1.pop(i)
@@ -154,11 +151,8 @@ if __name__ == "__main__":
     i = 0
     while i < len(doc2):
         for word in doc2[i]:
-            # print(word)
             if word != "":
                 empty = False
-                # print("uh oh")
-            # print("")
         
         if empty == True:
             doc2.pop(i)
@@ -172,8 +166,23 @@ if __name__ == "__main__":
     else:
         index_array = create_index_array(doc1, doc2)
 
-        frequency1 = words_to_vector(index_array, doc1)
-        frequency2 = words_to_vector(index_array, doc2)
+        frequency1 = []
+        for i in index_array:
+            frequency1.append(0)
+
+        for line in doc1:
+            tempf = words_to_vector(index_array, line)
+            frequency1 = join_frequency_vectors(frequency1, tempf)
+
+        frequency2 = []
+        for i in index_array:
+            frequency2.append(0)
+
+        for line in doc2:
+            tempf = words_to_vector(index_array, line)
+            frequency2 = join_frequency_vectors(frequency2, tempf)
+            
+        print("")
         print(index_array)
         print(doc1)
         print(doc2)
@@ -184,7 +193,7 @@ if __name__ == "__main__":
 
         cos = cosine(frequency1, frequency2)
 
-        print(f"OUTPUT {cos:.2f}%")
+        print(f"OUTPUT {cos*100:.2f}%")
         
         if(cos > .75):
             print("OUTPUT Very Similar")
