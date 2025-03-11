@@ -5,11 +5,19 @@
 # Time: 30 minutes
 
 def process_inventory(items, current_inventory, inventory_delta):
-    for i in range(len(items)):
-        current_inventory[i] += inventory_delta[i]
+    # for i in range(len(items)):
+    #     current_inventory[i] += inventory_delta[i]
 
-        if(current_inventory[i] < 0):
-            current_inventory[i] = 0
+    #     if(current_inventory[i] < 0):
+    #         current_inventory[i] = 0
+
+    for i, inv in enumerate(current_inventory):
+        inv += inventory_delta[i]
+
+        if(inv < 0):
+            inv = 0
+        
+        current_inventory[i] = inv
 
 def process_sale(items, current_inventory, item, quantity):
     itemIndex = items.index(item)
