@@ -19,8 +19,6 @@ def magnitude(v):
         sum += num**2
 
     mag = math.sqrt(sum)
-    print(v)
-    print(mag)
     return mag
 
 def cosine(v1, v2):
@@ -41,15 +39,11 @@ def words_to_vector(index_array, word_array):
     for i in range(len(index_array)):
         frequency.append(0) 
 
-    print(index_array)
-
     for word in word_array:
-        print(word)
         if word in index_array:
             word_index = index_array.index(word)
             frequency[word_index] += 1
 
-    print("")
     return frequency 
 
 def join_frequency_vectors(fv1, fv2):
@@ -181,13 +175,6 @@ if __name__ == "__main__":
         for line in doc2:
             tempf = words_to_vector(index_array, line)
             frequency2 = join_frequency_vectors(frequency2, tempf)
-            
-        print("")
-        print(index_array)
-        print(doc1)
-        print(doc2)
-        print(frequency1)
-        print(frequency2)
 
         frequency_final = join_frequency_vectors(frequency1, frequency2)
 
