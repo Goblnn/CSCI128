@@ -2,7 +2,7 @@
 # CSCI 128 - Section K
 # Assessment 8
 # References: None
-# Time: 2 hours
+# Time: 3.5 hours
 
 import math
 
