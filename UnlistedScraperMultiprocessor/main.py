@@ -1,9 +1,7 @@
-import math
 import msvcrt
 import multiprocessing
 import func
 import time
-import requests
 
 # public link: https://www.youtube.com/watch?v=Ipw0NZThxKo
 # unlisted link: https://www.youtube.com/watch?v=RFWk_NDRSWU
@@ -20,7 +18,6 @@ def scrape_videos():
     URL_base = "https://www.youtube.com/watch?v="
 
     reference_ID = [0,0,0,0,0,0,0,0,0,0,0]
-    reference_URL = ""
 
     URL_list = ["",
                 "",
@@ -28,8 +25,6 @@ def scrape_videos():
                 ""]
 
     average_loop_time = [0,0,0,0,0,0,0,0,0,0]
-
-    unlisted_videos = open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a")
 
     data_output_minimal = True
 
@@ -55,10 +50,8 @@ def scrape_videos():
         if(ready_to_continue == "STOP"):
             quit()
         else:
-            init_file = open("UnlistedScraperMultiProcessor/LastURL.txt","r")
-            init_URL = init_file.readline()
-            init_URL = init_URL.strip()
-            init_file.close()
+            with open("UnlistedScraperMultiProcessor/LastURL.txt","r") as init_file:
+                init_URL = init_file.readline().strip("\n")
 
             while(True):
                 if(URL_base in init_URL and len(init_URL) == 43):
@@ -79,9 +72,8 @@ def scrape_videos():
                         if(ready_to_continue == "STOP"):
                             quit()
                         else:
-                            init_file = open("UnlistedScraperMultiProcessor/LastURL.txt","r")
-                            init_URL = init_file.readline.strip("\n")
-                            init_file.close()
+                            with open("UnlistedScraperMultiProcessor/LastURL.txt","r") as init_file:
+                                init_URL = init_file.readline().strip("\n")
                     else: # Valid input
                         reference_ID = func.initialize_bit_ID(init_ID)
                         break
