@@ -27,9 +27,9 @@ while(not (init_from_file == "Y") and not (init_from_file == "N")):
 if(init_from_file == "Y"):
     print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
     ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
-    print("")
 
     while(ready_to_continue != "Y" and ready_to_continue != "STOP"):
+        print("")
         print(f"'{ready_to_continue}' is not a valid input. Please try again.")
         init_from_file = input("Is the URL in the file? ('Y' or 'STOP') ")
 
@@ -46,12 +46,13 @@ if(init_from_file == "Y"):
                 valid_ID = func.test_validity(init_ID)
 
                 if(valid_ID == False): # Invalid input
+                    print("")
                     print(f"'{init_URL}' is not a valid input. Please try again.")
                     print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
                     ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
-                    print("")
 
                     while(ready_to_continue != "Y" and ready_to_continue != "STOP"):
+                        print("")
                         print(f"'{ready_to_continue}' is not a valid input. Please try again.")
                         init_from_file = input("Is the URL in the file? ('Y' or 'STOP') ")
 
@@ -64,12 +65,13 @@ if(init_from_file == "Y"):
                     cur_ID = func.initialize_bit_ID(init_ID)
                     break
             else:
+                print("")
                 print(f"'{init_URL}' is not a valid input. Please try again.")
                 print("Please put the URL in the first line of 'YT_unlisted_scraper/LastURL.txt'")
                 ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
-                print("")
 
                 while(ready_to_continue != "Y" and ready_to_continue != "STOP"):
+                    print("")
                     print(f"'{ready_to_continue}' is not a valid input. Please try again.")
                     init_from_file = input("Is the URL in the file? ('Y' or 'STOP') ")
 
@@ -91,6 +93,7 @@ else:
             valid_ID = func.test_validity(init_ID)
 
             if(valid_ID == False): # Invalid input
+                print("")
                 print(f"'{init_ID}' is not a valid input. Please try again.")
                 init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
             else: # Valid input
@@ -101,12 +104,14 @@ else:
             valid_ID = func.test_validity(init_ID)
 
             if(valid_ID == False): # Invalid input
+                print("")
                 print(f"'{init_ID}' is not a valid input. Please try again.")
                 init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
             else: # Valid input
                 cur_ID = func.initialize_bit_ID(init_ID)
                 break
         else: # Invalid input
+            print("")
             print(f"'{init_ID}' is not a valid input. Please try again.")
             init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
 

@@ -21,6 +21,7 @@ def scrape_videos():
     data_output_minimal = True
 
     num_processes = int(input("How many processes would you like to run at once? "))
+    print("")
 
     # Initializing the URL
     init_from_file = input("Would you like to start the scraper using an URL in a file? ('Y' or 'N') ")
@@ -33,9 +34,9 @@ def scrape_videos():
     if(init_from_file == "Y"):
         print("Please put the URL in the first line of 'UnlistedScraperMultiProcessor/LastURL.txt'")
         ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
-        print("")
 
         while(ready_to_continue != "Y" and ready_to_continue != "STOP"):
+            print("")
             print(f"'{ready_to_continue}' is not a valid input. Please try again.")
             init_from_file = input("Is the URL in the file? ('Y' or 'STOP') ")
 
@@ -52,12 +53,13 @@ def scrape_videos():
                     valid_ID = func.test_validity(init_ID)
 
                     if(valid_ID == False): # Invalid input
+                        print("")
                         print(f"'{init_URL}' is not a valid input. Please try again.")
                         print("Please put the URL in the first line of 'UnlistedScraperMultiProcessor/LastURL.txt'")
                         ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
-                        print("")
 
                         while(ready_to_continue != "Y" and ready_to_continue != "STOP"):
+                            print("")
                             print(f"'{ready_to_continue}' is not a valid input. Please try again.")
                             init_from_file = input("Is the URL in the file? ('Y' or 'STOP') ")
 
@@ -70,12 +72,13 @@ def scrape_videos():
                         reference_ID = func.initialize_bit_ID(init_ID)
                         break
                 else:
+                    print("")
                     print(f"'{init_URL}' is not a valid input. Please try again.")
                     print("Please put the URL in the first line of 'UnlistedScraperMultiProcessor/LastURL.txt'")
                     ready_to_continue = input("Is the URL in the file? ('Y' or 'STOP') ")
-                    print("")
 
                     while(ready_to_continue != "Y" and ready_to_continue != "STOP"):
+                        print("")
                         print(f"'{ready_to_continue}' is not a valid input. Please try again.")
                         init_from_file = input("Is the URL in the file? ('Y' or 'STOP') ")
 
@@ -97,6 +100,7 @@ def scrape_videos():
                 valid_ID = func.test_validity(init_ID)
 
                 if(valid_ID == False): # Invalid input
+                    print("")
                     print(f"'{init_ID}' is not a valid input. Please try again.")
                     init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
                 else: # Valid input
@@ -107,12 +111,14 @@ def scrape_videos():
                 valid_ID = func.test_validity(init_ID)
 
                 if(valid_ID == False): # Invalid input
+                    print("")
                     print(f"'{init_ID}' is not a valid input. Please try again.")
                     init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
                 else: # Valid input
                     reference_ID = func.initialize_bit_ID(init_ID)
                     break
             else: # Invalid input
+                print("")
                 print(f"'{init_ID}' is not a valid input. Please try again.")
                 init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
 
