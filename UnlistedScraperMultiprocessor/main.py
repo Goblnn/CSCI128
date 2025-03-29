@@ -3,16 +3,8 @@ import multiprocessing
 import func
 import time
 
-# public link: https://www.youtube.com/watch?v=Ipw0NZThxKo
-# unlisted link: https://www.youtube.com/watch?v=RFWk_NDRSWU
-
-'''
-Sources used:
-https://wiki.archiveteam.org/index.php/YouTube/Technical_details#:~:text=8%20References-,ID%20formats,Za%2Dz0%2D9%2D_%20.
-
-'''
-
-# Variable Creation
+# Public link: https://www.youtube.com/watch?v=Ipw0NZThxKo
+# Unlisted link: https://www.youtube.com/watch?v=RFWk_NDRSWU
 
 def scrape_videos():
     URL_base = "https://www.youtube.com/watch?v="
@@ -144,7 +136,7 @@ def scrape_videos():
         time_start = time.time()
 
         # Stop Conditions
-        if(URL_list[-1][0] == "FINISHED"): # Check for no more IDs
+        if(URL_list[-1] == "FINISHED"): # Check for no more IDs
             print("Ran out of IDs (all values maxed out), stopping program.")
             break
 

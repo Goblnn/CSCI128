@@ -87,49 +87,6 @@ def create_url(ID):
     
     return URL
 
-def check_for_unlisted(URL):
-    '''
-    Checks an inputted YouTube URL for unlisted tags.
-
-    :param URL: YouTube URL
-    :return: True (unlisted) or False (public/private/other)
-    '''
-
-    # Get YouTube page
-    headers = {"User-Agent": random.choice(USER_AGENTS)}
-    site = requests.get(URL, headers=headers)
-    
-    # with open("YT_unlisted_scraper/youtube_page.html","w",encoding = "utf-8") as file:
-    #      file.write(site.text)
-
-    # Check for proper page lookup
-    if site.status_code != 200:
-        return False
-
-    country_tag = re.search(r'"availableCountries":', site.text)
-    unavailable = re.search(r"This video isn't available anymore", site.text)
-
-    while(not country_tag):
-        if(unavailable):
-            return False
-        
-        site = requests.get(URL, headers=headers)
-        country_tag = re.search(r'"availableCountries":', site.text)
-        unavailable = re.search(r"This video isn't available anymore", site.text)
-
-        print("Bad site get, trying again.")
-
-    # Search for 'isUnlisted' in the HTML
-    vid_type = re.search(r'"isUnlisted":(true|false)', site.text)
-
-    if vid_type:
-        if(vid_type.group(1) == "true"):
-            return True
-        else:
-            return False
-    
-    return False
-
 def increment_ID(ID):
     '''
     Increments an inputted 64 bit ID by one. 
@@ -163,10 +120,9 @@ def average_list(lst):
     :return: Average of the inputted list
     '''
 
-    i = 0
     sum = 0
     length = len(lst)
-    for i in range(len(lst)):
+    for i in range(length):
         sum += lst[i]
 
     return sum / length
@@ -175,17 +131,19 @@ def make_URL_list(ID, length):
     '''
     Creates a list of four URLs based on an initial ID.
 
-    :param ID:
-    :return: URL_list: List of URLs, ID: Reference ID for next URL
+    :param ID: Reference ID to start list at
+    :param length: Length of list to make
+    :return: URL_list, Refrence ID
     '''
 
     URL_list = []
     for i in range(length):
+        if(ID[0] == "FINISHED"):
+            URL_list.append("FINISHED")
+            break
+        
         URL_list.append(create_url(ID))
         ID = increment_ID(ID)
-
-        if(ID[0] == "FINISHED"):
-            break
 
     return URL_list, ID
 
