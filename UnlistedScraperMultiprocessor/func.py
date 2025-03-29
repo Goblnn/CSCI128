@@ -109,7 +109,6 @@ def increment_ID(ID):
     
     return ID
 
-# REFRACTOR THIS
 def average_list(lst):
     '''
     Finds the average of an inputted list.
@@ -156,9 +155,6 @@ def check_for_unlisted_multi(URL):
     # Get YouTube page
     headers = {"User-Agent": random.choice(USER_AGENTS)}
     site = requests.get(URL, headers=headers)
-    
-    # with open("YT_unlisted_scraper/youtube_page.html","w",encoding = "utf-8") as file:
-    #      file.write(site.text)
 
     # Check for proper page lookup
     if site.status_code != 200:

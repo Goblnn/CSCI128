@@ -145,7 +145,7 @@ def scrape_videos():
                 print("Keyboard input detected, stopping program.")
                 break
             if(msvcrt.getwch() == "o"):
-                print("Toggling outputs")
+                print("Toggling outputs.")
                 data_output_minimal = not data_output_minimal
 
         if(URLs_tested != 0):
@@ -170,13 +170,13 @@ def scrape_videos():
         if(data_output_minimal):
             if(URLs_tested % (num_processes * 10) == 0):
                 print(f"URLs tested: {URLs_tested}")
-                print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds")
+                print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds.")
                 print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
                 print("")
         else:
             print(f"Current URL List: {URL_list}")
             print(f"Current Reference ID: {reference_ID}")
-            print(f"Loop Time: {(time.time() - time_start):.4f} seconds")
+            print(f"Loop Time: {(time.time() - time_start):.4f} seconds.")
             print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
             print("")
 
@@ -194,7 +194,7 @@ def scrape_videos():
         total_tested_file.write(str(total_tested))
 
     print("")
-    print(f"Total Time Elapsed: {(time.time() - loop_start_time):.4f} seconds")
+    print(f"Total Time Elapsed: {(time.time() - loop_start_time):.4f} seconds.")
     print(f"Total URLs Tested This Execution: {URLs_tested}")
     print(f"Total URLs Tested: {total_tested}")
     print(f"Total Unlisted Videos Found: {unlisted_videos_count}")
