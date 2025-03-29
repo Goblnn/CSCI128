@@ -23,7 +23,6 @@ def test_validity(init_ID):
 
     valid_chars = True
 
-    i = 0
     for i in range(len(init_ID) - 1):
         if(init_ID[i] not in ID_chars):
             valid_chars = False
@@ -45,7 +44,7 @@ def initialize_bit_ID(ID):
     """
 
     new_ID = [0,0,0,0,0,0,0,0,0,0,0]
-    i = 0
+
     for i in range(len(ID) - 1):
         new_ID[i] = ID_chars.index(ID[i])
     
@@ -63,7 +62,6 @@ def initialize_char_ID(ID):
         
     new_ID = ""
 
-    i = 0
     for i in range(len(ID) - 1):
         new_ID += ID_chars[ID[i]]
     
@@ -141,7 +139,7 @@ def make_URL_list(ID, length):
         if(ID[0] == "FINISHED"):
             URL_list.append("FINISHED")
             break
-        
+
         URL_list.append(create_url(ID))
         ID = increment_ID(ID)
 

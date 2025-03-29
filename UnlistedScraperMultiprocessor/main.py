@@ -153,8 +153,7 @@ def scrape_videos():
 
         with multiprocessing.Pool(processes=num_processes) as pool:
             results = pool.map(func.check_for_unlisted_multi, URL_list)
-    
-        i = 0 
+     
         for URL, is_unlisted in results:
             if(is_unlisted):
                 with open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a") as unlisted_videos:
