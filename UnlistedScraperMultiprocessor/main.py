@@ -90,9 +90,8 @@ def scrape_videos():
                     if(ready_to_continue == "STOP"):
                         quit()
                     else:
-                        init_file = open("UnlistedScraperMultiProcessor/LastURL.txt","r")
-                        init_URL = init_file.readline.strip("\n")
-                        init_file.close()
+                        with open("UnlistedScraperMultiProcessor/LastURL.txt","r") as init_file:
+                            init_URL = init_file.readline().strip("\n")
     else:
         init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
 
@@ -166,9 +165,9 @@ def scrape_videos():
         i = 0 
         for URL, is_unlisted in results:
             if(is_unlisted):
-                unlisted_videos = open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a")
-                unlisted_videos.write(URL + "\n")
-                unlisted_videos.close()
+                with open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a") as unlisted_videos:
+                    unlisted_videos.write(URL + "\n")
+
                 unlisted_videos_count += 1
                 
                 print(f"Unlisted Video Found!")
