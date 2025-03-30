@@ -106,7 +106,7 @@ def check_for_unlisted(URL):
 
     while(not country_tag):
         if(unavailable):
-            return False
+            return "Private"
         
         site = requests.get(URL, headers=headers)
         country_tag = re.search(r'"availableCountries":', site.text)
@@ -119,9 +119,9 @@ def check_for_unlisted(URL):
 
     if vid_type:
         if(vid_type.group(1) == "true"):
-            return True
+            return "Unlisted"
         else:
-            return False
+            return "Public"
     
     return False
 

@@ -127,6 +127,7 @@ print("")
 
 URLs_tested = 0
 unlisted_videos_count = 0
+public_videos_count = 0
 loop_start_time = time.time()
 
 # Scraping begins
@@ -150,15 +151,24 @@ while(True):
         cur_ID = func.increment_ID(cur_ID)
         cur_URL = func.create_url(cur_ID)
 
-    is_unlisted = func.check_for_unlisted(cur_URL)
+    video_type = func.check_for_unlisted(cur_URL)
 
-    if(is_unlisted):
+    if(video_type == "Unlisted"):
         with open("YT_Unlisted_Scraper/UnlistedVideos.txt","a") as unlisted_videos:
             unlisted_videos.write(cur_URL + "\n")
         
         unlisted_videos_count += 1
         
         print(f"Unlisted Video Found!")
+        print(f"Current URL: {cur_URL}")
+        print(f"Current ID: {cur_ID}")
+    elif(video_type == "Public"):
+        with open("YT_Unlisted_Scraper/PublicVideos.txt","a") as unlisted_videos:
+            unlisted_videos.write(cur_URL + "\n")
+        
+        public_videos_count += 1
+        
+        print(f"Public Video Found!")
         print(f"Current URL: {cur_URL}")
         print(f"Current ID: {cur_ID}")
 
@@ -169,6 +179,7 @@ while(True):
             print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
             print("")
     else:
+        print(f"URLs tested: {URLs_tested}")
         print(f"Current URL: {cur_URL}")
         print(f"Current ID: {cur_ID}")
         print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds.")
@@ -195,5 +206,6 @@ print(f"Total Time Elapsed: {time.time() - loop_start_time:.4f} seconds.")
 print(f"Total URLs Tested This Execution: {URLs_tested}")
 print(f"Total URLs Tested: {total_tested}")
 print(f"Total Unlisted Videos Found: {unlisted_videos_count}")
+print(f"Total Public Videos Found: {unlisted_videos_count}")
 print(f"Last URL tested: {cur_URL}")
 print(f"Last ID tested: {cur_ID}")

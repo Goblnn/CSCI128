@@ -135,6 +135,7 @@ def scrape_videos():
 
     URLs_tested = 0
     unlisted_videos_count = 0
+    public_videos_count = 0
     loop_start_time = time.time()
 
     # Scraping begins
@@ -160,8 +161,8 @@ def scrape_videos():
         with multiprocessing.Pool(processes=num_processes) as pool:
             results = pool.map(func.check_for_unlisted_multi, URL_list)
      
-        for URL, is_unlisted in results:
-            if(is_unlisted):
+        for URL, video_type in results:
+            if(video_type == "Unlisted"):
                 with open("UnlistedScraperMultiProcessor/UnlistedVideos.txt","a") as unlisted_videos:
                     unlisted_videos.write(URL + "\n")
 
@@ -170,7 +171,16 @@ def scrape_videos():
                 print(f"Unlisted Video Found!")
                 print(f"Current URL: {URL}")
                 print(f"Current ID: {func.initialize_bit_ID(URL[32:])}")
+            elif(video_type == "Public"):
+                with open("UnlistedScraperMultiProcessor/PublicVideos.txt","a") as public_videos:
+                    public_videos.write(URL + "\n")
 
+                public_videos_count += 1
+                
+                print(f"Public Video Found!")
+                print(f"Current URL: {URL}")
+                print(f"Current ID: {func.initialize_bit_ID(URL[32:])}")
+            
             URLs_tested += 1
 
         if(data_output_minimal):
@@ -180,6 +190,7 @@ def scrape_videos():
                 print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
                 print("")
         else:
+            print(f"URLs tested: {URLs_tested}")
             print(f"Current URL List: {URL_list}")
             print(f"Current Reference ID: {reference_ID}")
             print(f"Loop Time: {(time.time() - time_start):.4f} seconds.")
@@ -204,6 +215,7 @@ def scrape_videos():
     print(f"Total URLs Tested This Execution: {URLs_tested}")
     print(f"Total URLs Tested: {total_tested}")
     print(f"Total Unlisted Videos Found: {unlisted_videos_count}")
+    print(f"Total Public Videos Found: {public_videos_count}")
     print(f"Last URL Tested: {URL_list[-1]}")
     print(f"Last ID Tested: {func.initialize_bit_ID(URL_list[-1][32:])}")
 
