@@ -81,7 +81,7 @@ if(init_from_file == "Y"):
                     with open("YT_unlisted_scraper/LastURL.txt","r") as init_file:
                         init_URL = init_file.readline().strip("\n")
 else:
-    init_ID = input("Would you like to start at an initial ID? (input YouTube link, YouTube ID, or 'NONE') ")
+    init_ID = input("Input ID to start at or 'NONE'. (Input YouTube link, YouTube ID, or 'NONE')")
 
     while(True):
         if(init_ID == "NONE"): # No cur_ID change
