@@ -186,6 +186,7 @@ def scrape_videos():
         if(data_output_minimal):
             if(URLs_tested % (num_processes * 10) == 0):
                 print(f"URLs tested: {URLs_tested}")
+                print(f"Current URL List: {URL_list}")
                 print(f"Average loop time: {func.average_list(average_loop_time):.4f} seconds.")
                 print(f"Press 'q' to stop the program. Press 'o' to toggle outputs.")
                 print("")
