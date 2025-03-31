@@ -156,14 +156,10 @@ def check_for_unlisted_multi(URL):
     headers = {"User-Agent": random.choice(USER_AGENTS)}
     site = requests.get(URL, headers=headers)
 
-    # Check for proper page lookup
-    if site.status_code != 200:
-        return False
-
     country_tag = re.search(r'"availableCountries":', site.text)
     unavailable = re.search(r"This video isn't available anymore", site.text)
 
-    while(not country_tag):
+    while(not country_tag or site.status_code != 200):
         if(unavailable):
             return URL, "Private"
         
