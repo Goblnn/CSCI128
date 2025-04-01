@@ -124,7 +124,7 @@ def scrape_videos():
 
     # THIS IS THE CODE FOR MAKING THE URL LIST, OTHER STUFF MAY NOT BE NECESSARY FOR URL
     URL_list, reference_ID = func.make_URL_list(reference_ID, num_processes)
-
+    
     print("")
     print(f"Current URL: {URL_list[0]}")
     print(f"Current ID: {func.initialize_bit_ID(URL_list[0][32:])}")
