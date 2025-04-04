@@ -119,7 +119,7 @@ def check_for_unlisted(URL):
         else:
             return "Public"
     
-    return False
+    return "Private"
 
 def increment_ID(ID):
     '''
