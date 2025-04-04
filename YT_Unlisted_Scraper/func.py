@@ -97,13 +97,18 @@ def check_for_unlisted(URL):
     headers = {"User-Agent": random.choice(USER_AGENTS)}
     site = requests.get(URL, headers=headers)
 
+    while(site.status_code != 200):
+        headers = {"User-Agent": random.choice(USER_AGENTS)}
+        site = requests.get(URL, headers=headers)
+
     country_tag = re.search(r'"availableCountries":', site.text)
     unavailable = re.search(r"This video isn't available anymore", site.text)
 
-    while(not country_tag or site.status_code != 200):
+    while(not country_tag):
         if(unavailable):
             return "Private"
         
+        headers = {"User-Agent": random.choice(USER_AGENTS)}
         site = requests.get(URL, headers=headers)
         country_tag = re.search(r'"availableCountries":', site.text)
         unavailable = re.search(r"This video isn't available anymore", site.text)
