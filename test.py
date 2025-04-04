@@ -1,12 +1,26 @@
+# Isaac Lane
+# CSCI128 - Section K
+# Python-DieRolls
+
 import matplotlib.pyplot as plt
 
-categories = ["Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet"]
-votes = [20, 12, 14, 25, 29, 4, 9]
-colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"] 
+inp = input()
+lst = []
+while inp != "DONE":
+    lst.append(int(inp)
+    inp = input()
+    
+    
+numbers = []
+times = []
+for num in lst:
+    if num not in numbers:
+        numbers.append(num)
+        times.append(1)
+    else:
+        index = numbers.index(num)
+        times[index] +=1
+        
+plt.bar(numbers, times)
 
-plt.bar(categories, votes, color=colors) 
-plt.title("What is your favorite color?")
-plt.xlabel("Colors")
-plt.ylabel("Votes")
-
-plt.show()
+plt.savefig("rolls_bar_chart.png")
