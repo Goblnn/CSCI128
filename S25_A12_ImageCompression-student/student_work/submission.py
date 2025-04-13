@@ -35,7 +35,14 @@ def block_average(grid, x, y, width, height):
     return merged_values
 
 def create_compressed_block(avg_color, width, height):
-    return 0
+    new_lst = []
+
+    for i in range(height):
+        new_lst.append([])
+        for j in range(width):
+            new_lst[i].append(avg_color)
+
+    return new_lst
 
 def merge_lists(lst1, lst2):
     new_lst = []
