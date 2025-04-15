@@ -2,19 +2,20 @@
 # CSCI 128 - Section K
 # Assessment 12
 # References: None
-# Time: 1 hour
+# Time: 3 hours
 
 import helper_library as helper
 
 def block_average(grid, x, y, width, height):
     new_grid = grid[y: y + height]
-    print(new_grid)
 
     for i, line in enumerate(new_grid):
         new_grid[i] = line[x: x + width]
-    print(new_grid)
 
-    merged_values = new_grid[0][0]
+    merged_values = []
+
+    for val in new_grid[0][0]:
+        merged_values.append(val)
 
     count = 1
 
@@ -24,9 +25,9 @@ def block_average(grid, x, y, width, height):
                 continue
             else:
                 count += 1
-                merged_values[0] = (merged_values[0] + values[0])
-                merged_values[1] = (merged_values[1] + values[1])
-                merged_values[2] = (merged_values[2] + values[2])
+                for i, val in enumerate(values):
+                    merged_values[i] = merged_values[i] + val
+
 
     merged_values[0] = merged_values[0] // count
     merged_values[1] = merged_values[1] // count
@@ -59,16 +60,39 @@ def merge_lists(lst1, lst2):
     return new_lst
 
 def compress_image(grid, x, y, width, height, threshold):
-    rgb_values = []
-    return rgb_values
+    if width <= threshold or height <= threshold:
+        return create_compressed_block(block_average(grid, x, y, width, height), width, height)
+    else:
+        new_width = width // 2
+        width2 = width - new_width
+        new_height = height // 2
+        height2 = height - new_height
 
+        top_compressed_image = compress_image(grid, x, y, new_width, new_height, threshold)
+        top_compressed_image = merge_lists(top_compressed_image, compress_image(grid, x + new_width, y, width2, new_height, threshold))
+
+        bottom_compressed_image = compress_image(grid, x, y + new_height, new_width, height2, threshold)
+        bottom_compressed_image = merge_lists(bottom_compressed_image, compress_image(grid, x + new_width, y + new_height, width2, height2, threshold))
+
+        compressed_image = []
+        for line in top_compressed_image:
+            compressed_image.append(line)
+
+        for line in bottom_compressed_image:
+            compressed_image.append(line)
+
+        return compressed_image
 
 if __name__ == "__main__":
     image_file = input("IMAGE_FILENAME> ")
-    threshold_num = int(input("COMPRESSIOn_THRESHOLD> "))
+    threshold_num = int(input("COMPRESSION_THRESHOLD> "))
 
     image_list = helper.image_to_list(image_file)
 
-    final_image = compress_image(image_list, 0, 0, len(image_list), len(image_list[1]), threshold_num)
+    final_image = compress_image(image_list, 0, 0, len(image_list[0]), len(image_list), threshold_num)
 
-    helper.output_image(final_image, image_file)
+    helper.output_image(final_image, "compressed_" + image_file)
+
+    print(f"OUTPUT Width: {len(final_image[0])}")
+    print(f"OUTPUT Height: {len(final_image)}")
+    print(f"OUTPUT Threshold: {threshold_num}")

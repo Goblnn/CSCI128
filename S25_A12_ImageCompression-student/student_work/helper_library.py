@@ -14,7 +14,7 @@ def image_to_list(image_file):
 
     # Dimensions
     width, height = image.size
-  
+
     for j in range(height):
         row = []
         for i in range(width):
