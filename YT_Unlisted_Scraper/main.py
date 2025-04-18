@@ -6,6 +6,7 @@ import time
 # unlisted link: https://www.youtube.com/watch?v=RFWk_NDRSWU
 
 # Variable Creation
+URL_bases = ["https://www.youtube.com/watch?v=","https://youtu.be/"]
 URL_base = "https://www.youtube.com/watch?v="
 
 cur_ID = [0,0,0,0,0,0,0,0,0,0,0]
