@@ -51,7 +51,7 @@ class ConstructionSite:
         price = 0
 
         for material in self.materials:
-            price += material.getID()
+            price += material.getPrice()
 
         self.price = price
 
@@ -82,13 +82,21 @@ class ConstructionSite:
         for num in matsList:
             totalMats += num
 
-        return f"{self.name} site in {self.city} has {totalMats} materials, with a value of {self.calculatePrice()}."
+        self.calculatePrice()
+
+        returnStr = f"{self.name} site in {self.city} has {totalMats} materials, with a value of {self.price}."
+
+        returnStr = returnStr.replace("\n","")
+
+        return returnStr
     
 if __name__ == "__main__":
     site1File = input()
     site2File = input()
 
-    with open("site1File", "r") as file:
+    print(site1File)
+
+    with open(site1File, "r") as file:
         name1 = file.readline()
         city1 = file.readline()
 
@@ -97,13 +105,13 @@ if __name__ == "__main__":
         for line in file:
             newLine = line.split()
 
-            newMat = Material(newLine[0])
+            newMat = Material(int(newLine[0]))
             newMat.setMaterialType(newLine[1])
-            newMat.setPrice(newLine[2])
+            newMat.setPrice(int(newLine[2]))
 
             site1.addMaterial(newMat)
 
-    with open("site2File", "r") as file:
+    with open(site2File, "r") as file:
         name2 = file.readline()
         city2 = file.readline()
 
@@ -112,12 +120,20 @@ if __name__ == "__main__":
         for line in file:
             newLine = line.split()
 
-            newMat = Material(newLine[0])
+            newMat = Material(int(newLine[0]))
             newMat.setMaterialType(newLine[1])
-            newMat.setPrice(newLine[2])
+            newMat.setPrice(int(newLine[2]))
 
             site2.addMaterial(newMat)
 
-    print(f"OUTPUT {site1}")
+    print(f"OUTPUT {str(site1)}")
     mats = site1.countMaterials()
-    print(f"OUTPUT WOOD: {mats[0]} Steel: {mats[1]} Brick: {mats[2]}")
+    print(f"OUTPUT Wood:{mats[0]} Steel:{mats[1]} Brick:{mats[2]}")
+
+    print(f"OUTPUT {str(site2)}")
+    mats = site2.countMaterials()
+    print(f"OUTPUT Wood:{mats[0]} Steel:{mats[1]} Brick:{mats[2]}")
+
+    site1.incorporateSite(site2)
+
+    print(f"OUTPUT {site1}")
